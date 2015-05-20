@@ -10,12 +10,15 @@
         android:layout_gravity="left|top"
         android:background="@drawable/style">
 
-        <LinearLayout
+        <TableLayout
             android:id="@+id/CheckLayout"
             android:orientation="vertical"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent">
 
-        </LinearLayout>
+
+
+        </TableLayout>
     </ScrollView>
+
 </FrameLayout>

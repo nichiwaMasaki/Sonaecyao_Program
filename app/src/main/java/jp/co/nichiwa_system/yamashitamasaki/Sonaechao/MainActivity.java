@@ -9,17 +9,21 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -242,7 +246,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         }
         //要チェック
         //フラグメントのリニアレイアウトを取得
-        LinearLayout ll = (LinearLayout)findViewById(R.id.CheckLayout);
+        TableLayout tl  = (TableLayout)findViewById(R.id.CheckLayout);
 
         //プレファレンスを生成して、設定画面のデータを取得する
         pref = getSharedPreferences("Preferences",MODE_PRIVATE);
@@ -278,10 +282,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         Hijousyoku_tv[6].setText( get_Number_of_days_Warning("furizu_dorai_number_pref", "フリーズドライ") );
         Hijousyoku_tv[7].setText( get_Number_of_days_Warning("mizu_number_pref", "水") );
         Hijousyoku_tv[8].setText( get_Number_of_days_Warning("karori_meito_number_pref", "カロリーメイト") );
-        Hijousyoku_tv[9].setText( get_Number_of_days_Warning("okasi_number_pref", "お菓子") );
-        Hijousyoku_tv[10].setText(get_Child_Warning("rinyu_number_pref"));
-        Hijousyoku_tv[11].setText(get_Number_of_days_Warning("konamilk_number_pref", "粉ミルク"));
-
+        Hijousyoku_tv[9].setText(get_Number_of_days_Warning("okasi_number_pref", "お菓子"));
+        Hijousyoku_tv[10].setText(get_Child_Warning("rinyu_number"));
+        Hijousyoku_tv[11].setText(get_Child_Warning("konamilk_number"));
 
         //警告文を押すとダイアログが表示されるようにする
         Hijousyoku_tv[0].setOnClickListener(new DialogOnClickListenerClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true, this));
@@ -296,14 +299,18 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         Hijousyoku_tv[9].setOnClickListener(new DialogOnClickListenerClass("お菓子", "okasi_number", R.drawable.okasi, true, this));
         Hijousyoku_tv[10].setOnClickListener(new DialogOnClickListenerClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this));
         Hijousyoku_tv[11].setOnClickListener(new DialogOnClickListenerClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this));
+        //getLoaderManager().initLoader(0, null, this);
 
-        getLoaderManager().initLoader(0, null, this);
+        ImageView Icon_iv = new ImageView(this);
+        Icon_iv.setImageResource(R.drawable.batsu);
+
         //画面に表示する
         for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
             //警告文を挿入する
             if( Hijousyoku_tv[i].length() > 0 ) {
                 Hijousyoku_tv[i].setTextColor(Color.RED);
-                ll.addView(Hijousyoku_tv[i]);
+                //tl.addView(Icon_iv, );
+                tl.addView(Hijousyoku_tv[i]);
             }
         }
 
@@ -313,12 +320,12 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
         //備蓄品の最終入力日
         pref = getSharedPreferences("Stock_pref",MODE_PRIVATE);
-        cl.set(pref.getInt("year", 2000), pref.getInt("month", 1), pref.getInt("day", 1));
+        cl.set( pref.getInt("year", 2000), pref.getInt("month", 1), pref.getInt("day", 1) );
         b_tv.setText( "最終入力日:" + cl.get(Calendar.YEAR) + "年" + (cl.get(Calendar.MONTH)+1) + "月" + cl.get(Calendar.DAY_OF_MONTH) + "日" );
 
         //非常食の最終入力日
         pref = getSharedPreferences("Hijousyoku_pref",MODE_PRIVATE);
-        cl.set(pref.getInt("year", 2000), pref.getInt("month", 1), pref.getInt("day", 1));
+        cl.set( pref.getInt("year", 2000), pref.getInt("month", 1), pref.getInt("day", 1) );
         h_tv.setText( "最終入力日:" + cl.get(Calendar.YEAR) + "年" + (cl.get(Calendar.MONTH)+1) + "月" + cl.get(Calendar.DAY_OF_MONTH) + "日" );
 
         //広告の設定
@@ -349,10 +356,15 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         }
         else if( nokori <= nissu ) {
             //賞味期限が期日に近づいたら表示
-            str = "・" + HijousyokuName + "の賞味期限が" + nokori + "日後です";
+            str = "・" + HijousyokuName + "の賞味期限が" + nokori + "日前です";
         }
 
         return str;
+    }
+
+    public String get_Icon_Warning()
+    {
+        return null;
     }
 
     // 乳児一人以上で、なおかつ離乳食と粉ミルクが「0」のとき、警告を表示
@@ -360,8 +372,8 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     {
         String str = "";
         int youji = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt("youji_people",0);
-        int rinyu = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt("rinyu_number",0);
-        int milk  = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt("konamilk_number",0);
+        int rinyu = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt(name,0);
+        int milk  = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt(name,0);
 
         if( youji >= 1  ) {
             if( rinyu >= 1 ) {
