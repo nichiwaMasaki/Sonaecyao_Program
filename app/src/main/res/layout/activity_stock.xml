@@ -1,0 +1,240 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="jp.co.nichiwa_system.yamashitamasaki.Sonaechao.Stock"
+    android:id="@+id/stock"
+    android:clickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:nestedScrollingEnabled="false">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="必需品"
+        android:id="@+id/textView24"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textSize="15dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/gasView"
+        android:src="@drawable/gas"
+        android:layout_gravity="right|top"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/textView24"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/matchView"
+        android:src="@drawable/match"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/textView24"
+        android:layout_toEndOf="@+id/gasView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/bombeView"
+        android:src="@drawable/bombe"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_above="@+id/tissueView"
+        android:layout_toEndOf="@+id/matchView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/whistleView"
+        android:src="@drawable/whistle"
+        android:layout_alignWithParentIfMissing="false"
+        android:adjustViewBounds="false"
+        android:baselineAlignBottom="false"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:scaleType="fitXY"
+        android:nestedScrollingEnabled="false"
+        android:layout_above="@+id/almiView"
+        android:layout_alignStart="@+id/kankiriView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/shitagiView"
+        android:src="@drawable/shitagi"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/gasView"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/tissueView"
+        android:src="@drawable/tissue"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/gasView"
+        android:layout_toEndOf="@+id/gasView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/almiView"
+        android:src="@drawable/almi"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/matchView"
+        android:layout_toEndOf="@+id/matchView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/gunnteView"
+        android:src="@drawable/gunnte"
+        android:layout_below="@+id/whistleView"
+        android:layout_alignStart="@+id/whistleView"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_alignParentEnd="false" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/maskView"
+        android:src="@drawable/mask"
+        android:layout_below="@+id/shitagiView"
+        android:layout_alignParentStart="true"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_alignParentEnd="false" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/biniiruView"
+        android:layout_below="@+id/shitagiView"
+        android:layout_toEndOf="@+id/gasView"
+        android:src="@drawable/biniiru"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_alignParentEnd="false" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/kaityuView"
+        android:src="@drawable/kaityu"
+        android:nestedScrollingEnabled="false"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/tissueView"
+        android:layout_toEndOf="@+id/matchView" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/kankiriView"
+        android:layout_alignTop="@+id/kaityuView"
+        android:layout_toEndOf="@+id/kaityuView"
+        android:src="@drawable/kankiri"
+        android:scaleType="fitXY"
+        android:nestedScrollingEnabled="false"
+        android:layout_alignParentEnd="false" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/radioView"
+        android:layout_below="@+id/maskView"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/radio"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/judenkiView"
+        android:src="@drawable/judenti"
+        android:layout_below="@+id/maskView"
+        android:layout_alignStart="@+id/biniiruView"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/supunView"
+        android:layout_below="@+id/biniiruView"
+        android:layout_toEndOf="@+id/biniiruView"
+        android:src="@drawable/supun"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/koppuView"
+        android:layout_below="@+id/kankiriView"
+        android:layout_toEndOf="@+id/supunView"
+        android:src="@drawable/koppu"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:id="@+id/kyuugoView"
+        android:layout_below="@+id/radioView"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/kyuugo"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:id="@+id/nyujiView"
+        android:src="@drawable/nyuji"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/radioView"
+        android:layout_alignStart="@+id/judenkiView" />
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dentiView"
+        android:src="@drawable/denti"
+        android:layout_below="@+id/judenkiView"
+        android:layout_toStartOf="@+id/gunnteView" />
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="jp.co.nichiwa_system.yamashitamasaki.Sonaechao.Ad"
+        class="jp.co.nichiwa_system.yamashitamasaki.Sonaechao.Ad"
+        android:id="@+id/fragment_ad"
+        tools:layout="@layout/fragment_ad"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="jp.co.nichiwa_system.yamashitamasaki.Sonaechao.ButtonFragment"
+        class="jp.co.nichiwa_system.yamashitamasaki.Sonaechao.ButtonFragment"
+        android:id="@+id/fragment3"
+        tools:layout="@layout/fragment_button"
+        android:layout_above="@+id/fragment_ad"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
