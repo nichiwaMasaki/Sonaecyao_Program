@@ -28,6 +28,26 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
     private boolean calendarshow; //カレンダー機能の有無
     private String tani;            //アイテムの単
 
+    //1日生きるために最低限必要な量
+    int[][] Hijou_num = {
+            { 1, 1, 0 }, //缶詰ゴハン
+            { 1, 1, 0 }, //乾麺
+            { 1, 1, 0 }, //カンパン
+            { 1, 1, 0 }, //レトルトご飯
+            { 1, 1, 0 }, //フリーズドライ
+            { 1, 1, 0 }, //レトルト食品
+            { 1, 1, 0 }, //缶詰め（肉・魚）
+            { 1, 1, 0 }, //カロリーメイト（一箱で3栄養）
+            { 1, 1, 0 }, //お菓子類（1で1箱・1袋）
+            { 0, 0, 1 }, //粉ミルク（ 1000mlで3栄養 Lサイズのペットボトルに相当 ）
+            { 3, 2, 2 }  //水（1ℓで1栄養　ふつうのペットボトル相当）
+    };
+
+    public DialogOnClickListenerClass(ItemClass item){
+        //ずばっと
+        this(item.ItemName,item.prefName,item.Drawable_Location,item.Calendar_flag,item.act);
+    }
+
     public DialogOnClickListenerClass(String TitleName, String DateName, int img_id, boolean calendarshow, String tani, Activity act){
         //他のものは下記のコンストラクタへ運ぶ
         this(TitleName,DateName,img_id,calendarshow,act);
@@ -48,9 +68,8 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         //ダイアログの生成
-        AlertDialog.Builder alert;
-        //指定したアクティビティを格納
-        alert = new AlertDialog.Builder(act);
+        AlertDialog.Builder alert = new AlertDialog.Builder(act);
+        //タイトルの設定
         alert.setTitle(TitleName);
 
         //元のアクティビティの場所を指定

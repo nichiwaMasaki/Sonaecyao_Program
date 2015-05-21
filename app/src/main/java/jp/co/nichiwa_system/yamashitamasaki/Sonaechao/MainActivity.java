@@ -30,6 +30,8 @@ import android.widget.Toast;
 import  com.google.android.gms.ads.AdRequest;
 import  com.google.android.gms.ads.AdView;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -67,64 +69,80 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         DispBtn.setOnClickListener( new OnClickListenerClass(".SubActivity",this ) );
 
         SharedPreferences pref = getSharedPreferences("Preferences",MODE_PRIVATE);
-                //各グラフの取得
+        //各グラフの取得
         ImageButton R_button = (ImageButton)findViewById(R.id.R_graph);
         ImageButton L_button = (ImageButton)findViewById(R.id.L_graph);
+
+        //非常食の項目を取得する
+        ItemClass[] item = new ItemClass[12];
+        item[0] = new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this);
+        item[1] = new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", this);
+        item[2] = new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", this);
+        item[3] = new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", this);
+        item[4] = new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", this);
+        item[5] = new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", this);
+        item[6] = new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", this);
+        item[7] = new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",this);
+        item[8] = new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", this);
+        item[9] = new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", this);
+        item[10] = new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this );
+        item[11] = new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this);
+
         int[] goukei = new int[2];
 
         //非常食の割合を取得
-        goukei[0] = (int)eiyou();
+        goukei[0] = eiyou();
 
         //左グラフの画像
         if( goukei[0] < 0 )
         {
             L_button.setImageResource(R.drawable.l_graph0);
         }
-        else if( 0 < goukei[1] && goukei[1] < 10 )
+        else if( 0 < goukei[0] && goukei[0] < 10 )
         {
             L_button.setImageResource(R.drawable.l_graph1);
         }
-        else if( 10 < goukei[1] && goukei[1] < 20 )
+        else if( 10 < goukei[0] && goukei[0] < 20 )
         {
             L_button.setImageResource(R.drawable.l_graph2);
         }
-        else if( 20 < goukei[1] && goukei[1] < 30 )
+        else if( 20 < goukei[0] && goukei[0] < 30 )
         {
             L_button.setImageResource(R.drawable.l_graph3);
         }
-        else if( 30 < goukei[1] && goukei[1] < 40 )
+        else if( 30 < goukei[0] && goukei[0] < 40 )
         {
             L_button.setImageResource(R.drawable.l_graph4);
         }
-        else if( 40 < goukei[1] && goukei[1] < 50 )
+        else if( 40 < goukei[0] && goukei[0] < 50 )
         {
             L_button.setImageResource(R.drawable.l_graph5);
         }
-        else if( 50 < goukei[1] && goukei[1] < 60 )
+        else if( 50 < goukei[0] && goukei[0] < 60 )
         {
             L_button.setImageResource(R.drawable.l_graph6);
         }
-        else if( 60 < goukei[1] && goukei[1] < 70 )
+        else if( 60 < goukei[0] && goukei[0] < 70 )
         {
             L_button.setImageResource(R.drawable.l_graph7);
         }
-        else if( 70 < goukei[1] && goukei[1] < 80 )
+        else if( 70 < goukei[0] && goukei[0] < 80 )
         {
             L_button.setImageResource(R.drawable.l_graph8);
         }
-        else if( 80 < goukei[1] && goukei[1] < 90 )
+        else if( 80 < goukei[0] && goukei[0] < 90 )
         {
             L_button.setImageResource(R.drawable.l_graph9);
         }
-        else if( 90 < goukei[1] && goukei[1] < 100 )
+        else if( 90 < goukei[0] && goukei[0] < 100 )
         {
             L_button.setImageResource(R.drawable.l_graph10);
         }
-        else if( 100 < goukei[1] && goukei[1] < 110 )
+        else if( 100 < goukei[0] && goukei[0] < 110 )
         {
             L_button.setImageResource(R.drawable.l_graph11);
         }
-        else if( 110 < goukei[1] )
+        else if( 110 < goukei[0] )
         {
             L_button.setImageResource(R.drawable.l_graph12);
         }
@@ -134,20 +152,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
         //防犯グッズの値
         goukei[1] = 50;
-                /*
-                pref.getInt("retorutogohan_number",0) +
-                pref.getInt("kandume_number",0) +
-                pref.getInt("kanmen_number",0) +
-                pref.getInt("kanpan_number",0) +
-                pref.getInt("kandume2_number",0) +
-                pref.getInt("retoruto_number",0) +
-                pref.getInt("furizu_dorai_number",0) +
-                pref.getInt("mizu_number",0) +
-                pref.getInt("karori_meito_number",0) +
-                pref.getInt("okasi_number",0) +
-                pref.getInt("rinyu_number",0) +
-                pref.getInt("konamilk_number",0);
-                */
 
 
         //右グラフの画像
@@ -245,9 +249,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
             keikoku.Diarog_show();
         }
         //要チェック
-        //フラグメントのリニアレイアウトを取得
-        TableLayout tl  = (TableLayout)findViewById(R.id.CheckLayout);
-
         //プレファレンスを生成して、設定画面のデータを取得する
         pref = getSharedPreferences("Preferences",MODE_PRIVATE);
         int gou = pref.getInt("youji_people",0) +
@@ -268,51 +269,70 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         }
         //要チェックに使用するTextViewを使用する
         TextView[] Hijousyoku_tv = new TextView[MAX_HIJOUSYOKU];
+        //フラグメントのリニアレイアウトを取得
+        //TODO:アイコンと文字を要チェック欄に表示
+        TableLayout tl  = (TableLayout)findViewById(R.id.CheckLayout);
+
         for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
             Hijousyoku_tv[i] = new TextView(this);
+            //警告文を取得する
+            Hijousyoku_tv[i].setText(get_Number_of_days_Warning(item[i].prefName, item[i].ItemName));
+            //警告文を挿入する
+            if( Hijousyoku_tv[i].getText().length() > 0 ) {
+
+                //警告文を押すとダイアログが表示されるようにする
+                Hijousyoku_tv[i].setOnClickListener( new DialogOnClickListenerClass(item[i]));
+
+                //アイコンの設定
+                get_Icon_Warning(item[i].prefName, item[i]);
+                Hijousyoku_tv[i].setCompoundDrawablesWithIntrinsicBounds(item[i].getIcon(), 0, 0, 0);
+                Hijousyoku_tv[i].setTextColor(Color.RED);
+            }
         }
 
-        //警告文を取得する
-        Hijousyoku_tv[0].setText( get_Number_of_days_Warning("retorutogohan_number_pref", "レトルトご飯") );
-        Hijousyoku_tv[1].setText( get_Number_of_days_Warning("kandume_number_pref", "缶詰（ご飯）") );
-        Hijousyoku_tv[2].setText( get_Number_of_days_Warning("kanmen_number_pref", "乾麺") );
-        Hijousyoku_tv[3].setText( get_Number_of_days_Warning("kanpan_number_pref", "カンパン") );
-        Hijousyoku_tv[4].setText( get_Number_of_days_Warning("kandume2_number_pref", "缶詰（肉・魚）") );
-        Hijousyoku_tv[5].setText( get_Number_of_days_Warning("retoruto_number_pref", "レトルト食品") );
-        Hijousyoku_tv[6].setText( get_Number_of_days_Warning("furizu_dorai_number_pref", "フリーズドライ") );
-        Hijousyoku_tv[7].setText( get_Number_of_days_Warning("mizu_number_pref", "水") );
-        Hijousyoku_tv[8].setText( get_Number_of_days_Warning("karori_meito_number_pref", "カロリーメイト") );
-        Hijousyoku_tv[9].setText(get_Number_of_days_Warning("okasi_number_pref", "お菓子"));
-        Hijousyoku_tv[10].setText(get_Child_Warning("rinyu_number"));
-        Hijousyoku_tv[11].setText(get_Child_Warning("konamilk_number"));
+        //幼児用のみテキストを
+        Hijousyoku_tv[10].setText( get_Child_Warning( item[10].prefName,item[10].ItemName ) );
+        Hijousyoku_tv[11].setText( get_Child_Warning( item[11].prefName,item[11].ItemName ) );
+        Hijousyoku_tv[10].setCompoundDrawablesWithIntrinsicBounds(item[10].getIcon(), 0, 0, 0);
+        Hijousyoku_tv[11].setCompoundDrawablesWithIntrinsicBounds(item[11].getIcon(), 0, 0, 0);
 
-        //警告文を押すとダイアログが表示されるようにする
-        Hijousyoku_tv[0].setOnClickListener(new DialogOnClickListenerClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true, this));
-        Hijousyoku_tv[1].setOnClickListener(new DialogOnClickListenerClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume, true, this ) );
-        Hijousyoku_tv[2].setOnClickListener(new DialogOnClickListenerClass("乾麺", "kanmen_number", R.drawable.kanmen, true, this) );
-        Hijousyoku_tv[3].setOnClickListener(new DialogOnClickListenerClass("カンパン", "kanpan_number", R.drawable.kanpan, true, this));
-        Hijousyoku_tv[4].setOnClickListener(new DialogOnClickListenerClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, this));
-        Hijousyoku_tv[5].setOnClickListener(new DialogOnClickListenerClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, this));
-        Hijousyoku_tv[6].setOnClickListener(new DialogOnClickListenerClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, this));
-        Hijousyoku_tv[7].setOnClickListener(new DialogOnClickListenerClass("水", "mizu_number", R.drawable.mizu, true, this));
-        Hijousyoku_tv[8].setOnClickListener(new DialogOnClickListenerClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, this));
-        Hijousyoku_tv[9].setOnClickListener(new DialogOnClickListenerClass("お菓子", "okasi_number", R.drawable.okasi, true, this));
-        Hijousyoku_tv[10].setOnClickListener(new DialogOnClickListenerClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this));
-        Hijousyoku_tv[11].setOnClickListener(new DialogOnClickListenerClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this));
-        //getLoaderManager().initLoader(0, null, this);
 
-        ImageView Icon_iv = new ImageView(this);
-        Icon_iv.setImageResource(R.drawable.batsu);
-
-        //画面に表示する
+        //TODO:ソートで　幼児＞警告＞注意
         for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
-            //警告文を挿入する
-            if( Hijousyoku_tv[i].length() > 0 ) {
-                Hijousyoku_tv[i].setTextColor(Color.RED);
-                //tl.addView(Icon_iv, );
+            //特に警告のないものは飛ばす
+            if (Hijousyoku_tv[i].getText().length() > 0) {
+                for( int k = MAX_HIJOUSYOKU-1 ; k > i ; k-- ) {
+                    //同じく特に警告のないものは飛ばす
+                    if (Hijousyoku_tv[k].getText().length() > 0) {
+                        //乳児用の食料である
+                        if(item[k].ItemName == "離乳食" || item[k].ItemName == "粉ミルク") {
+                            //場所を交換する
+                            TextView tv = Hijousyoku_tv[k - 1];
+                            Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
+                            Hijousyoku_tv[k] = tv;
+
+                            //アイテム
+                            ItemClass ic = item[k-1];
+                            item[k-1] = item[k];
+                            item[k] = ic;
+                        }else if (item[k].getIcon() == R.drawable.batsu || Hijousyoku_tv[k-1].getText().length() < 0) { //×ボタン または 空白 である
+                            //場所を交換する
+                            TextView tv = Hijousyoku_tv[k - 1];
+                            Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
+                            Hijousyoku_tv[k] = tv;
+
+                            //アイテム
+                            ItemClass ic = item[k-1];
+                            item[k-1] = item[k];
+                            item[k] = ic;
+                        }
+                    }
+                }
+                //画面に表示する
                 tl.addView(Hijousyoku_tv[i]);
             }
         }
+
 
         //最終入力日
         TextView b_tv = (TextView)findViewById(R.id.bichiku_nyuuryoku);
@@ -349,35 +369,49 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         int nissu =  ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt("kiniti_day",0);
         if( nokori <= 0 ) {
             //賞味期限が切れたら表示
-            str = "・" + HijousyokuName + "の賞味期限が切れました";
-        } else if(nokori == 1)  {
-            //賞味期限が当日になったら表示
-            str = "・" + HijousyokuName + "の賞味期限が当日です";
-        }
-        else if( nokori <= nissu ) {
+            str = HijousyokuName + "の賞味期限が切れました";
+        } else if( nokori <= nissu ) {
             //賞味期限が期日に近づいたら表示
-            str = "・" + HijousyokuName + "の賞味期限が" + nokori + "日前です";
+            str = HijousyokuName + "の賞味期限が" + nokori + "日前です";
+            if(nokori == 1) {
+                //賞味期限が当日になったら表示
+                str = HijousyokuName + "の賞味期限が当日です";
+            }
         }
 
         return str;
     }
 
-    public String get_Icon_Warning()
+    /*********************************************************************
+     //非常食の賞味期限と設定した期日を計算して、それぞれのアイコンを返す
+     // prefName       ・・・ プレファレンス名
+     // HijousyokuName ・・・ 非常食の名前
+     *********************************************************************/
+    public void get_Icon_Warning(String prefName ,ItemClass item)
     {
-        return null;
+        //残り日数を取得する
+        int nokori = (int)getDate(prefName);
+        //期日を取得する
+        int nissu =  ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt("kiniti_day",0);
+        if( nokori <= 0 ) {
+            item.setIcon( R.drawable.batsu );
+        } else if( nokori <= nissu ) {
+            item.setIcon(R.drawable.bikkuri);
+        }
     }
 
     // 乳児一人以上で、なおかつ離乳食と粉ミルクが「0」のとき、警告を表示
-    public String get_Child_Warning( String name )
+    public String get_Child_Warning( String dateName , String name )
     {
         String str = "";
         int youji = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt("youji_people",0);
-        int rinyu = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt(name,0);
-        int milk  = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt(name,0);
+        int youji_h = ( getSharedPreferences("Preferences",MODE_PRIVATE) ).getInt(dateName,0);
 
+        //幼児が一人以上の時
         if( youji >= 1  ) {
-            if( rinyu >= 1 ) {
-                str += "離乳食が入力されていません";
+            //離乳食がない
+            if( youji_h < 1 ) {
+                str = name + "が備蓄されていません";
             }
         }
 
@@ -390,7 +424,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
      *********************************************************************/
     public long getDate(String prefName)
     {
-        SharedPreferences pref2 = getSharedPreferences(prefName,MODE_PRIVATE);
+        SharedPreferences pref2 = getSharedPreferences(prefName+"_pref",MODE_PRIVATE);
         //現在の時刻
         Calendar cl = Calendar.getInstance();
         //引数で指定した食品の賞味期限
@@ -400,9 +434,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         Date date2 = cl2.getTime();
 
         long current_time = date1.getTime();
-        long retorutogohan_time = date2.getTime();
+        long item_time = date2.getTime();
 
-        long nokori = (retorutogohan_time - current_time) / ( 1000 * 60 * 60 * 24 );
+        long nokori = (item_time - current_time) / ( 1000 * 60 * 60 * 24 );
 
         return nokori;
     }
@@ -411,35 +445,95 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
      // 人数と非常食の栄養量から割り出されたパーセンテージを返す
      // return: s_w ・・・ 非常食の全体のパーセンテージ
      *********************************************************************/
-    public double eiyou() {
+    public int eiyou() {
         SharedPreferences pref = getSharedPreferences("Preferences", MODE_PRIVATE);
 
-        int r = pref.getInt("retorutogohan_number", 0);
-        int k = pref.getInt("kandume_number", 0);
-        int kan = pref.getInt("kanmen_number", 0);
+        int reto_g = pref.getInt("retorutogohan_number", 0);
+        int kan = pref.getInt("kandume_number", 0);
+        int kanmen = pref.getInt("kanmen_number", 0);
         int kanpan = pref.getInt("kanpan_number", 0);
         int kan2 = pref.getInt("kandume2_number", 0);
         int reto = pref.getInt("retoruto_number", 0);
-        int f = pref.getInt("furizu_dorai_number", 0);
+        int furizu = pref.getInt("furizu_dorai_number", 0);
         double mizu = pref.getInt("mizu_number", 0);
         int rinyu = pref.getInt("rinyu_number", 0);
         int konamilk = pref.getInt("konamilk_number", 0);
         int karori = pref.getInt("karori_meito_number", 0);
         int okasi = pref.getInt("okasi_number", 0);
 
-        String today_last = pref.getString("today", "まだ入力されていません。");
-        String today_last_s = pref.getString("today_s", "まだ入力されていません。");
+
+        //現在保存されている非常食の数
+        int[] Hijou_present = {
+                kan,
+                reto,
+                kanmen,
+                kanpan,
+                kan2,
+                furizu,
+                (int)mizu,
+                rinyu,
+                konamilk,
+                karori,
+                okasi
+        };
 
 
-        //各合計
-        //int sum = g + m + b + h + s + t + a + gun;
-        int Hijousyoku_sum = r + k + kan + kanpan + kan2 + reto + f + karori + okasi + rinyu + konamilk;
-        //String str = "備蓄品:"+String.valueOf(sum);
-        String Hijousyoku_str2 = "非常食:" + String.valueOf(Hijousyoku_sum);
-        //int hoge = setting.getInt("setting_sp",0);
+        //人数
         int adult_n = pref.getInt("otona_people", 0);
         int child_n = pref.getInt("kobito_people", 0);
         int baby_n = pref.getInt("youji_people", 0);
+
+
+        String today_last = pref.getString("today", "まだ入力されていません。");
+        String today_last_s = pref.getString("today_s", "まだ入力されていません。");
+
+        //  日数 ×( 人数合計 ×（　1コの栄養量×量　） ) = 最低限必要な栄養量
+        //　日数
+        int nissu = pref.getInt("sitei_day",3);
+
+        //非常食1個のおおよその栄養量
+        int[][] Hijou_eiyou = {
+                { 1, 1, 0 }, //缶詰ゴハン
+                { 1, 1, 0 }, //乾麺
+                { 3, 3, 0 }, //カンパン
+                { 1, 1, 0 }, //レトルトご飯
+                { 1, 1, 0 }, //フリーズドライ
+                { 1, 1, 0 }, //レトルト食品
+                { 1, 1, 0 }, //缶詰め（肉・魚）
+                { 3, 3, 0 }, //カロリーメイト（一箱で3栄養）
+                { 1, 1, 0 }, //お菓子類（1で1箱・1袋）
+                { 0, 0, 1 }, //離乳食（1で80g）
+                { 0, 0, 3 }, //粉ミルク（ 3で1000ml Lサイズのペットボトルに相当 ）
+                { 1, 1, 1 }  //水（1ℓで1栄養　1本に1ℓ ふつうのペットボトル相当）
+        };
+
+        //1日生きるために最低限必要な量
+        int[][] Hijou_num = {
+                { 1, 1, 0 }, //缶詰ゴハン
+                { 1, 1, 0 }, //乾麺
+                { 1, 1, 0 }, //カンパン
+                { 1, 1, 0 }, //レトルトご飯
+                { 1, 1, 0 }, //フリーズドライ
+                { 1, 1, 0 }, //レトルト食品
+                { 1, 1, 0 }, //缶詰め（肉・魚）
+                { 1, 1, 0 }, //カロリーメイト（一箱で3栄養）
+                { 1, 1, 0 }, //お菓子類（1で1箱・1袋）
+                { 0, 0, 1 }, //粉ミルク（ 1000mlで3栄養 Lサイズのペットボトルに相当 ）
+                { 3, 2, 2 }  //水（1ℓで1栄養　ふつうのペットボトル相当）
+        };
+
+        //非常食の種類
+        int Hijou_type = Hijou_num.length;
+        //人の種類
+        int Human_type = 3;
+
+        //各合計
+        //int sum = g + m + b + h + s + t + a + gun;
+        int Hijousyoku_sum = reto_g + kan + kan + kanpan + kan2 + reto + furizu + karori + okasi + rinyu + konamilk;
+        //String str = "備蓄品:"+String.valueOf(sum);
+        String Hijousyoku_str2 = "非常食:" + String.valueOf(Hijousyoku_sum);
+        //int hoge = setting.getInt("setting_sp",0);
+
         double mizu_a, mizu_c, mizu_b;
 
         double food_a, food_c, food_b;
@@ -451,6 +545,45 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         double p;
         //非常食（大人用）の栄養価合計値
         double v;
+
+
+        //水を除く栄養量
+        int Hijou_All_Eiyou = 0;
+
+        for( int j = 0 ; j < Hijou_type-1 ; j++ ) {
+            for( int k = 0 ; k < Hijou_num[j].length ; k++ ) {
+                Hijou_All_Eiyou = Hijou_num[j][k] * Hijou_eiyou[j][k];
+            }
+        }
+        // 人数×全体の栄養量
+        Hijou_All_Eiyou *= ( adult_n + child_n + baby_n );
+
+        // 日数×一日に最低必要な栄養量
+        // これが最低限必要な栄養量である
+        Hijou_All_Eiyou *= nissu;
+
+        int imamotterueiyouryou = 0;
+        //現在持っているやつ
+        for( int j = 0 ; j < Hijou_type-1 ; j++ ) {
+            //おおよその栄養量
+            int num =  Hijou_eiyou[j][0] + Hijou_eiyou[j][1] + Hijou_eiyou[j][2];
+            imamotterueiyouryou = Hijou_present[j] * num;
+        }
+
+        // 人数×現在所持している量から割り出された栄養量
+        imamotterueiyouryou *= ( adult_n + child_n + baby_n );
+
+        imamotterueiyouryou *= nissu;
+
+        // （持っている栄養量÷必要最低限の栄養量） ÷ 2
+        double percent = ( imamotterueiyouryou / Hijou_All_Eiyou );
+
+        int aaaa =  (int)(percent*100);
+
+        return aaaa;
+
+
+        /*
 
         //栄養価の計算。乾パンとカロリーメイトを抜いたものは栄養価１．乾パン、カロリーメイトは３。
         v = ((Hijousyoku_sum - kanpan - karori) * 1) + (kanpan + karori) * 3;
@@ -500,7 +633,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         //非常食と水の備蓄を合計。最大100％
         s_w = s_w + p;
 
-        return s_w;
+        return (int)s_w;
+        */
+
     }
 
     @Override
