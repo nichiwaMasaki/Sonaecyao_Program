@@ -9,19 +9,19 @@ import android.view.View;
  * Created by yamashita.masaki on 2015/04/30.
  */
 //遷移クラス
-class OnClickListenerClass implements View.OnClickListener {
+class OnClickTransListenerClass implements View.OnClickListener {
 
     //メンバ変数
     public Intent intent;   //インテント
     public Activity act;    //アクティビティ
 
     //コンストラクタ(アクティビティのみ)
-    public OnClickListenerClass(Activity act) {
+    public OnClickTransListenerClass(Activity act) {
         this.act = act; //アクティビティデータの挿入
     }
 
     //コンストラクタ（引数あり）
-    public OnClickListenerClass( String name, Activity act ) {
+    public OnClickTransListenerClass( String name, Activity act ) {
         intent = new Intent();
         intent.setClassName("jp.co.nichiwa_system.yamashitamasaki.Sonaechao", "jp.co.nichiwa_system.yamashitamasaki.Sonaechao" + name);
         //アクティビティを保存しない(維持しない)

@@ -6,15 +6,27 @@ import android.app.Activity;
  * Created by yamashita.masaki on 2015/05/15.
  */
 public class ItemClass {
-    String ItemName;            //ƒAƒCƒeƒ€‚Ì–¼‘O
-    String prefName;            //ƒvƒŒƒtƒ@ƒŒƒ“ƒX–¼
-    int Drawable_Location;   //‰æ‘œ‚ÌêŠ
-    String Unit;                //’PˆÊ”
-    boolean Calendar_flag;   //ƒtƒ‰ƒO
-    Activity act;               //ƒAƒNƒeƒBƒrƒeƒB
-    int Drawable_Icon;        //ƒAƒCƒRƒ“
+    private int        Number;                    //ç•ªå·
+    private String      ItemName;              //ã‚¢ã‚¤ãƒ†ãƒ ã®åå‰
+    private String      prefName;              //ãƒ—ãƒ¬ãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹å
+    private int         Drawable_Location;   //ç”»åƒã®å ´æ‰€
+    private String      Unit;                   //å˜ä½æ•°
+    private boolean    Calendar_flag;        //ãƒ•ãƒ©ã‚°
+    private Activity    act;                    //ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£
+    private int         Drawable_Icon;        //ã‚¢ã‚¤ã‚³ãƒ³
 
     public ItemClass() {}
+
+    public ItemClass(String ItemName, String prefName, int Drawable_Location, boolean Calendar_flag, String Unit, int Number , Activity act ) {
+        this( ItemName, prefName, Drawable_Location, Calendar_flag, Unit , act );
+        this.Number = Number;
+    }
+
+
+    public ItemClass(String ItemName, String prefName, int Drawable_Location, boolean Calendar_flag, String Unit, Activity act ) {
+        this( ItemName, prefName, Drawable_Location, Calendar_flag, act );
+        this.Unit = Unit;
+    }
 
     public  ItemClass(String ItemName, String prefName, int Drawable_Location, boolean Calendar_flag,Activity act ) {
         this.ItemName = ItemName;
@@ -23,21 +35,23 @@ public class ItemClass {
         this.Calendar_flag = Calendar_flag;
         this.act = act;
     }
-
-    public ItemClass(String ItemName, String prefName, int Drawable_Location, boolean Calendar_flag, String Unit, Activity act ) {
-        this.ItemName = ItemName;
-        this.prefName = prefName;
-        this.Drawable_Location = Drawable_Location;
-        this.Unit = Unit;
-        this.Calendar_flag = Calendar_flag;
-        this.act = act;
-    }
-
     public void setIcon( int Drawable_Icon ) {
         this.Drawable_Icon = Drawable_Icon;
     }
 
+    public int getNumber() { return Number; }
+    public  String getName() { return ItemName; }
+    public String getPrefName(){ return prefName; }
+    public int getDrawable_Location(){ return Drawable_Location; }
+    public String getUnit(){ return Unit; }
+    public boolean getCalender_flag(){ return Calendar_flag; };
+    public Activity getActivity(){ return act; }
     public int getIcon() {
         return Drawable_Icon;
     }
+
+    public void setNumber( int Number ){
+        this.Number = Number;
+    }
+
 }

@@ -59,14 +59,14 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         ImageButton bichiku_ib = (ImageButton)findViewById(R.id.R_graph);
 
         //非常食へ
-        hijousyoku.setOnClickListener(new OnClickListenerClass(".Hijousyoku", this));
-        hijousyoku_ib.setOnClickListener(new OnClickListenerClass(".Hijousyoku",this));
+        hijousyoku.setOnClickListener(new OnClickTransListenerClass(".Hijousyoku", this));
+        hijousyoku_ib.setOnClickListener(new OnClickTransListenerClass(".Hijousyoku",this));
 
         //備蓄品へ
-        Stock.setOnClickListener(new OnClickListenerClass(".Stock", this));
-        bichiku_ib.setOnClickListener( new OnClickListenerClass(".Stock",this) );
+        Stock.setOnClickListener(new OnClickTransListenerClass(".Stock", this));
+        bichiku_ib.setOnClickListener( new OnClickTransListenerClass(".Stock",this) );
         //設定画面へ
-        DispBtn.setOnClickListener( new OnClickListenerClass(".SubActivity",this ) );
+        DispBtn.setOnClickListener( new OnClickTransListenerClass(".SubActivity",this ) );
 
         SharedPreferences pref = getSharedPreferences("Preferences",MODE_PRIVATE);
         //各グラフの取得
@@ -270,13 +270,13 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         //要チェックに使用するTextViewを使用する
         TextView[] Hijousyoku_tv = new TextView[MAX_HIJOUSYOKU];
         //フラグメントのリニアレイアウトを取得
-        //TODO:アイコンと文字を要チェック欄に表示
+
         TableLayout tl  = (TableLayout)findViewById(R.id.CheckLayout);
 
         for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
             Hijousyoku_tv[i] = new TextView(this);
             //警告文を取得する
-            Hijousyoku_tv[i].setText(get_Number_of_days_Warning(item[i].prefName, item[i].ItemName));
+            Hijousyoku_tv[i].setText(get_Number_of_days_Warning(item[i].getPrefName(), item[i].getName()));
             //警告文を挿入する
             if( Hijousyoku_tv[i].getText().length() > 0 ) {
 
@@ -284,15 +284,15 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                 Hijousyoku_tv[i].setOnClickListener( new DialogOnClickListenerClass(item[i]));
 
                 //アイコンの設定
-                get_Icon_Warning(item[i].prefName, item[i]);
+                get_Icon_Warning(item[i].getPrefName(), item[i]);
                 Hijousyoku_tv[i].setCompoundDrawablesWithIntrinsicBounds(item[i].getIcon(), 0, 0, 0);
                 Hijousyoku_tv[i].setTextColor(Color.RED);
             }
         }
 
-        //幼児用のみテキストを
-        Hijousyoku_tv[10].setText( get_Child_Warning( item[10].prefName,item[10].ItemName ) );
-        Hijousyoku_tv[11].setText( get_Child_Warning( item[11].prefName,item[11].ItemName ) );
+        //幼児用のみテキストを変更
+        Hijousyoku_tv[10].setText( get_Child_Warning( item[10].getPrefName(),item[10].getName() ) );
+        Hijousyoku_tv[11].setText( get_Child_Warning( item[11].getPrefName(),item[11].getName() ) );
         Hijousyoku_tv[10].setCompoundDrawablesWithIntrinsicBounds(item[10].getIcon(), 0, 0, 0);
         Hijousyoku_tv[11].setCompoundDrawablesWithIntrinsicBounds(item[11].getIcon(), 0, 0, 0);
 
@@ -305,7 +305,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     //同じく特に警告のないものは飛ばす
                     if (Hijousyoku_tv[k].getText().length() > 0) {
                         //乳児用の食料である
-                        if(item[k].ItemName == "離乳食" || item[k].ItemName == "粉ミルク") {
+                        if(item[k].getName() == "離乳食" || item[k].getName() == "粉ミルク") {
                             //場所を交換する
                             TextView tv = Hijousyoku_tv[k - 1];
                             Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
@@ -373,7 +373,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         } else if( nokori <= nissu ) {
             //賞味期限が期日に近づいたら表示
             str = HijousyokuName + "の賞味期限が" + nokori + "日前です";
-            if(nokori == 1) {
+            if(nokori == 0) {
                 //賞味期限が当日になったら表示
                 str = HijousyokuName + "の賞味期限が当日です";
             }
@@ -416,6 +416,96 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         }
 
         return str;
+    }
+
+    //アクティビティが再始動したら行う処理
+    @Override
+    protected void onResume() {
+        super.onResume();//おなじみ
+
+
+        //非常食の項目を取得する
+        ItemClass[] item = new ItemClass[12];
+        item[0] = new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this);
+        item[1] = new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", this);
+        item[2] = new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", this);
+        item[3] = new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", this);
+        item[4] = new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", this);
+        item[5] = new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", this);
+        item[6] = new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", this);
+        item[7] = new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",this);
+        item[8] = new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", this);
+        item[9] = new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", this);
+        item[10] = new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this );
+        item[11] = new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this);
+
+        //要チェックに使用するTextViewを使用する
+        TextView[] Hijousyoku_tv = new TextView[MAX_HIJOUSYOKU];
+        //フラグメントのリニアレイアウトを取得
+
+        TableLayout tl  = (TableLayout)findViewById(R.id.CheckLayout);
+        tl.removeAllViews();//中身を全部消去
+
+        for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
+            Hijousyoku_tv[i] = new TextView(this);
+            //警告文を取得する
+            Hijousyoku_tv[i].setText(get_Number_of_days_Warning(item[i].getPrefName(), item[i].getName()));
+            //警告文を挿入する
+            if( Hijousyoku_tv[i].getText().length() > 0 ) {
+
+                //警告文を押すとダイアログが表示されるようにする
+                Hijousyoku_tv[i].setOnClickListener( new DialogOnClickListenerClass(item[i]));
+
+                //アイコンの設定
+                get_Icon_Warning(item[i].getPrefName(), item[i]);
+                Hijousyoku_tv[i].setCompoundDrawablesWithIntrinsicBounds(item[i].getIcon(), 0, 0, 0);
+                Hijousyoku_tv[i].setTextColor(Color.RED);
+            }
+        }
+
+        //幼児用のみテキストを変更
+        Hijousyoku_tv[10].setText( get_Child_Warning( item[10].getPrefName(),item[10].getName() ) );
+        Hijousyoku_tv[11].setText( get_Child_Warning( item[11].getPrefName(),item[11].getName() ) );
+        Hijousyoku_tv[10].setCompoundDrawablesWithIntrinsicBounds(item[10].getIcon(), 0, 0, 0);
+        Hijousyoku_tv[11].setCompoundDrawablesWithIntrinsicBounds(item[11].getIcon(), 0, 0, 0);
+
+
+
+        for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
+            //特に警告のないものは飛ばす
+            if (Hijousyoku_tv[i].getText().length() > 0) {
+                for( int k = MAX_HIJOUSYOKU-1 ; k > i ; k-- ) {
+                    //同じく特に警告のないものは飛ばす
+                    if (Hijousyoku_tv[k].getText().length() > 0) {
+                        //乳児用の食料である
+                        if(item[k].getName() == "離乳食" || item[k].getName() == "粉ミルク") {
+                            //場所を交換する
+                            TextView tv = Hijousyoku_tv[k - 1];
+                            Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
+                            Hijousyoku_tv[k] = tv;
+
+                            //アイテム
+                            ItemClass ic = item[k-1];
+                            item[k-1] = item[k];
+                            item[k] = ic;
+                        }else if (item[k].getIcon() == R.drawable.batsu || Hijousyoku_tv[k-1].getText().length() < 0) { //×ボタン または 空白 である
+                            //場所を交換する
+                            TextView tv = Hijousyoku_tv[k - 1];
+                            Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
+                            Hijousyoku_tv[k] = tv;
+
+                            //アイテム
+                            ItemClass ic = item[k-1];
+                            item[k-1] = item[k];
+                            item[k] = ic;
+                        }
+                    }
+                }
+                //画面に表示する
+                tl.addView(Hijousyoku_tv[i]);
+            }
+        }
+
     }
 
     /*********************************************************************
@@ -487,11 +577,12 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         String today_last = pref.getString("today", "まだ入力されていません。");
         String today_last_s = pref.getString("today_s", "まだ入力されていません。");
 
-        //  日数 ×( 人数合計 ×（　1コの栄養量×量　） ) = 最低限必要な栄養量
+        //  日数 ×( 人数合計 ×（　1コの栄養量×量　） ) = パーセンテージ
         //　日数
         int nissu = pref.getInt("sitei_day",3);
 
         //非常食1個のおおよその栄養量
+        //ゼロの場合は栄養なし
         int[][] Hijou_eiyou = {
                 { 1, 1, 0 }, //缶詰ゴハン
                 { 1, 1, 0 }, //乾麺
@@ -561,6 +652,8 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         // 日数×一日に最低必要な栄養量
         // これが最低限必要な栄養量である
         Hijou_All_Eiyou *= nissu;
+
+        //  日数 ×( 人数合計 ×（　1コの栄養量×量　） ) = パーセント
 
         int imamotterueiyouryou = 0;
         //現在持っているやつ

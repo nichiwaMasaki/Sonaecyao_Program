@@ -79,9 +79,9 @@ public class SubActivity extends Activity {
         Button hijousyoku = (Button)findViewById(R.id.hijousyoku);  //「非常食」ボタン
 
         //移動
-        Home.setOnClickListener( new OnClickListenerClass("jp.co.nichiwa_system.yamashitamasaki.Sonaechao","jp.co.nichiwa_system.yamashitamasaki.Sonaechao.MainActivity") );
-        Stock.setOnClickListener( new OnClickListenerClass("jp.co.nichiwa_system.yamashitamasaki.Sonaechao","jp.co.nichiwa_system.yamashitamasaki.Sonaechao.Stock") );
-        hijousyoku.setOnClickListener( new OnClickListenerClass("jp.co.nichiwa_system.yamashitamasaki.Sonaechao","jp.co.nichiwa_system.yamashitamasaki.Sonaechao.Hijousyoku") );
+        Home.setOnClickListener( new OnClickListenerClass() );
+        Stock.setOnClickListener( new OnClickListenerClass(".Stock") );
+        hijousyoku.setOnClickListener( new OnClickListenerClass(".Hijousyoku") );
 
         //広告の設定
         /*
@@ -134,14 +134,19 @@ public class SubActivity extends Activity {
     }
 
     //遷移クラス
-    class OnClickListenerClass implements View.OnClickListener {
+    class OnClickListenerClass extends OnClickTransListenerClass {
 
         public Intent intent;
 
-        public OnClickListenerClass( String SPackage, String name ) {
-            intent = new Intent();
-            intent.setClassName(SPackage,name);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        //コンストラクタ
+        public OnClickListenerClass() {
+            // スーパークラスであるOnClickTransListenerClassの
+            // コンストラクタに引数を渡す
+            super(SubActivity.this);
+        }
+
+        public OnClickListenerClass( String name ) {
+            super( name, SubActivity.this );
         }
 
         @Override

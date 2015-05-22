@@ -33,19 +33,21 @@ public class Hijousyoku extends Activity {
         Button DispBtn = (Button)findViewById(R.id.settingbutton);    //「設定」ボタン
         Button Stock = (Button)findViewById(R.id.bichiku);             //「備蓄」ボタン
 
+        ImageView[] Hijousyoku_iv = new ImageView[12];
+
         //各イメージビューの取得
-        ImageView retorutogohan_iv = (ImageView)findViewById(R.id.retoruto_gohan);
-        ImageView kandume_iv = (ImageView)findViewById(R.id.kandume);
-        ImageView kanmen_iv = (ImageView)findViewById(R.id.kanmen);
-        ImageView kanpan_iv = (ImageView)findViewById(R.id.kanpan);
-        ImageView kandume2_iv = (ImageView)findViewById(R.id.kandume2);
-        ImageView retoruto_iv = (ImageView)findViewById(R.id.retoruto);
-        ImageView furizu_dorai_iv = (ImageView)findViewById(R.id.furizu_dorai);
-        ImageView mizu_iv = (ImageView)findViewById(R.id.mizu);
-        ImageView karori_meito_iv = (ImageView)findViewById(R.id.karori_meito);
-        ImageView okasi_iv = (ImageView)findViewById(R.id.okasi);
-        ImageView rinyu_iv = (ImageView)findViewById(R.id.rinyu);
-        ImageView konamilk_iv = (ImageView)findViewById(R.id.konamilk);
+        Hijousyoku_iv[0] = (ImageView)findViewById(R.id.retoruto_gohan);
+        Hijousyoku_iv[1] = (ImageView)findViewById(R.id.kandume);
+        Hijousyoku_iv[2] = (ImageView)findViewById(R.id.kanmen);
+        Hijousyoku_iv[3] = (ImageView)findViewById(R.id.kanpan);
+        Hijousyoku_iv[4] = (ImageView)findViewById(R.id.kandume2);
+        Hijousyoku_iv[5] = (ImageView)findViewById(R.id.retoruto);
+        Hijousyoku_iv[6] = (ImageView)findViewById(R.id.furizu_dorai);
+        Hijousyoku_iv[7] = (ImageView)findViewById(R.id.mizu);
+        Hijousyoku_iv[8] = (ImageView)findViewById(R.id.karori_meito);
+        Hijousyoku_iv[9] = (ImageView)findViewById(R.id.okasi);
+        Hijousyoku_iv[10] = (ImageView)findViewById(R.id.rinyu);
+        Hijousyoku_iv[11] = (ImageView)findViewById(R.id.konamilk);
 
         //非常食の項目を取得する
         ItemClass[] item = new ItemClass[12];
@@ -62,29 +64,27 @@ public class Hijousyoku extends Activity {
         item[10] = new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this );
         item[11] = new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this);
 
+        //番号の振り分け
+        for( int i = 0 ; i < 12 ; i++ ) {
+            item[i].setNumber(i);
+        }
 
         // 場所を指定する
-        Home.setOnClickListener(new OnClickListenerClass(".MainActivity", this));
-        Stock.setOnClickListener(new OnClickListenerClass(".Stock", this));
-        DispBtn.setOnClickListener(new OnClickListenerClass(".SubActivity", this));
+        Home.setOnClickListener(new OnClickTransListenerClass(this));
+        Stock.setOnClickListener(new OnClickTransListenerClass(".Stock", this));
+        DispBtn.setOnClickListener(new OnClickTransListenerClass(".SubActivity", this));
 
-        //ボタンアクションの処理
-        retorutogohan_iv.setOnClickListener( new DialogOnClickListenerClass(item[0]) );
-        kandume_iv.setOnClickListener( new DialogOnClickListenerClass(item[1]) );
-        kanmen_iv.setOnClickListener( new DialogOnClickListenerClass(item[2]) );
-        kanpan_iv.setOnClickListener( new DialogOnClickListenerClass(item[3] ) );
-        kandume2_iv.setOnClickListener( new DialogOnClickListenerClass(item[4]) );
-        retoruto_iv.setOnClickListener( new DialogOnClickListenerClass(item[5]) );
-        furizu_dorai_iv.setOnClickListener( new DialogOnClickListenerClass(item[6]) );
-        mizu_iv.setOnClickListener( new DialogOnClickListenerClass( item[7] ) );
-        karori_meito_iv.setOnClickListener( new DialogOnClickListenerClass(item[8] ) );
-        okasi_iv.setOnClickListener( new DialogOnClickListenerClass(item[9] ) );
-        rinyu_iv.setOnClickListener( new DialogOnClickListenerClass(item[10]) );
-        konamilk_iv.setOnClickListener( new DialogOnClickListenerClass(item[11]) );
-
-        if( Check_Day(item[0].prefName) ) {
-            retorutogohan_iv.setBackgroundResource(R.drawable.style);
+        //枠線をつける
+        for( int i = 0 ; i < 12 ; i++ ) {
+            //ボタンアクションの処理
+            Hijousyoku_iv[i].setOnClickListener( new DialogOnClickListenerClass( item[i]) );
+            //期限の切れているものは赤線を敷く
+            if( Check_Day(item[i].getPrefName()) ) {
+                Hijousyoku_iv[i].setBackgroundResource(R.drawable.style2);
+            }
         }
+
+
 
         //広告の設定
         AdView adview = (AdView)findViewById(R.id.adView);
@@ -112,10 +112,10 @@ public class Hijousyoku extends Activity {
      *********************************************************************/
     public long getDate(String prefName)
     {
-        SharedPreferences pref2 = getSharedPreferences(prefName+"_pref",MODE_PRIVATE);
+        SharedPreferences pref2 = getSharedPreferences( prefName + "_pref" ,MODE_PRIVATE);
         //現在の時刻
         Calendar cl = Calendar.getInstance();
-        //引数で指定した食品の賞味期限
+        //引数で指定した非常食の賞味期限
         Calendar cl2 = Calendar.getInstance();
         cl2.set( pref2.getInt("year", cl.get(Calendar.YEAR) ), pref2.getInt("month", cl.get(Calendar.MONTH) ), pref2.getInt("day", cl.get(Calendar.DAY_OF_MONTH) ) );
         Date date1 = cl.getTime();

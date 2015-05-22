@@ -6,24 +6,24 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * ’P‚Éƒ_ƒCƒAƒƒO‚ð•\Ž¦‚³‚¹‚éƒNƒ‰ƒX
+ * ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã™ã‚‹ã‚¯ãƒ©ã‚¹
   Created by yamashita.masaki on 2015/05/15.
  */
 public class DialogClass extends AlertDialog.Builder{
 
     TextView tv;
 
-    //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    //ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     public DialogClass(String TitleName, String Message, Activity act)
     {
         super(act);
         setTitle(TitleName);
 
-        //•¶Žš‘€ì‚ð‚·‚é
-        tv = new TextView(act);//ƒeƒLƒXƒg—p
+        //ãƒ†ã‚­ã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®ç”Ÿæˆ
+        tv = new TextView(act);
         tv.setText(Message);
 
-        //TextView‚ðƒ_ƒCƒAƒƒO‚Å•\Ž¦‚³‚¹‚é
+        //
         setView(tv);
     }
 
@@ -37,10 +37,10 @@ public class DialogClass extends AlertDialog.Builder{
     }
 
     public void Diarog_show() {
-        // ƒAƒ‰[ƒgƒ_ƒCƒAƒƒO‚ÌƒLƒƒƒ“ƒZƒ‹‚ª‰Â”\‚©‚Ç‚¤‚©‚ðÝ’è‚µ‚Ü‚·
+        //
         setCancelable(true);
-        AlertDialog alertDialog = create();
-        // ƒAƒ‰[ƒgƒ_ƒCƒAƒƒO‚ð•\Ž¦‚µ‚Ü‚·
+        AlertDialog alertDialog = this.create();
+        //è¡¨ç¤º
         alertDialog.show();
     }
 
