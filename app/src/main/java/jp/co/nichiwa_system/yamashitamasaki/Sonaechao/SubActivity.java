@@ -80,8 +80,8 @@ public class SubActivity extends Activity {
 
         //移動
         Home.setOnClickListener( new OnClickListenerClass() );
-        Stock.setOnClickListener( new OnClickListenerClass(".Stock") );
-        hijousyoku.setOnClickListener( new OnClickListenerClass(".Hijousyoku") );
+        Stock.setOnClickListener( new OnClickListenerClass(".Stock", this) );
+        hijousyoku.setOnClickListener( new OnClickListenerClass(".Hijousyoku", this) );
 
         //広告の設定
         /*
@@ -136,8 +136,6 @@ public class SubActivity extends Activity {
     //遷移クラス
     class OnClickListenerClass extends OnClickTransListenerClass {
 
-        public Intent intent;
-
         //コンストラクタ
         public OnClickListenerClass() {
             // スーパークラスであるOnClickTransListenerClassの
@@ -145,8 +143,8 @@ public class SubActivity extends Activity {
             super(SubActivity.this);
         }
 
-        public OnClickListenerClass( String name ) {
-            super( name, SubActivity.this );
+        public OnClickListenerClass( String name, Activity act ) {
+            super( name, act );
         }
 
         @Override

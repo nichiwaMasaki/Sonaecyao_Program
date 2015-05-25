@@ -6,42 +6,46 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
     <ImageButton
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/L_graph"
         android:src="@drawable/l_graph0"
         android:scaleType="fitXY"
-        android:layout_below="@+id/textView17"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/textView18"
+        android:layout_alignStart="@+id/fragment3" />
 
     <ImageButton
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/R_graph"
         android:src="@drawable/r_graph0"
         android:scaleType="fitXY"
-        android:layout_below="@+id/textView18"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/L_graph" />
+        android:layout_alignTop="@+id/L_graph"
+        android:layout_alignEnd="@+id/fragment3" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
         android:text="非常食"
         android:id="@+id/textView17"
-        android:layout_above="@+id/R_graph"
-        android:layout_toEndOf="@+id/textView" />
+        android:layout_above="@+id/L_graph"
+        android:layout_alignStart="@+id/L_graph"
+        android:layout_toStartOf="@+id/textView18"
+        android:layout_alignEnd="@+id/L_graph" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
         android:text="防災グッズ"
         android:id="@+id/textView18"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/R_graph"
-        android:layout_marginEnd="35dp" />
+        android:layout_toEndOf="@+id/L_graph"
+        android:layout_alignStart="@+id/R_graph" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,8 +65,7 @@
         android:id="@+id/hijousyoku_nyuuryoku"
         android:textSize="10dp"
         android:layout_above="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/R_graph" />
+        android:layout_alignStart="@+id/L_graph" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -72,8 +75,7 @@
         android:id="@+id/bichiku_nyuuryoku"
         android:textSize="10dp"
         android:layout_below="@+id/R_graph"
-        android:layout_alignEnd="@+id/fragment3"
-        android:layout_toEndOf="@+id/L_graph" />
+        android:layout_alignStart="@+id/R_graph" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -102,11 +104,10 @@
         class="jp.co.nichiwa_system.yamashitamasaki.Sonaechao.WorthChecking"
         android:id="@+id/fragment"
         tools:layout="@layout/fragment_worth_checking"
-        android:layout_alignEnd="@+id/bichiku_nyuuryoku"
         android:layout_below="@+id/textView"
-        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/fragment3"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/fragment3" />
+        android:layout_alignParentEnd="true" />
 
     <fragment
         android:layout_width="wrap_content"

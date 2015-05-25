@@ -47,25 +47,6 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
             { 0, 0, 1 }, //粉ミルク（ 1000mlで3栄養 Lサイズのペットボトルに相当 ）
     };
 
-    //非常食の項目を取得する
-    final ItemClass[] item = {
-            new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", act),
-            new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", act),
-            new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", act),
-            new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", act),
-            new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", act),
-            new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", act),
-            new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", act),
-            new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", act),
-            new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",act),
-            new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", act),
-            new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, act ),
-            new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, act)
-    };
-
-
-
-
     //ItemClassのコンストラクタ
     public DialogOnClickListenerClass(ItemClass item){
         //ずばっと
@@ -199,9 +180,9 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
                     null_alert.show();
                 }
                 else {
-                    //正常なので、
-                    //データを保存する
+                    //正常なのでデータを保存する
                     saveInt(et, DateName);
+
                     //現在の日付を保存
                     saveCalendar( Calendar.getInstance(), act.getLocalClassName() );
 
@@ -211,23 +192,24 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
                         saveCalendar(cl, DateName);
                     }
 
+                    //アクティビティがメイン画面の場合、以下の処理を行う
                     if( act.getClass() == MainActivity.class )
                     {
-
                         //非常食の項目を取得する
-                        ItemClass[] item = new ItemClass[12];
-                        item[0] = new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", act);
-                        item[1] = new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", act);
-                        item[2] = new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", act);
-                        item[3] = new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", act);
-                        item[4] = new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", act);
-                        item[5] = new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", act);
-                        item[6] = new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", act);
-                        item[7] = new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",act);
-                        item[8] = new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", act);
-                        item[9] = new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", act);
-                        item[10] = new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, act );
-                        item[11] = new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, act);
+                        ItemClass[] item  = {
+                                new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", act),
+                                new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", act),
+                                new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", act),
+                                new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", act),
+                                new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", act),
+                                new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", act),
+                                new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", act),
+                                new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",act),
+                                new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", act),
+                                new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", act),
+                                new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, act ),
+                                new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, act)
+                        };
 
                         //要チェックに使用するTextViewを使用する
                         TextView[] Hijousyoku_tv = new TextView[12];
@@ -257,8 +239,6 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
                         Hijousyoku_tv[11].setText( get_Child_Warning( item[11].getPrefName(),item[11].getName() ) );
                         Hijousyoku_tv[10].setCompoundDrawablesWithIntrinsicBounds(item[10].getIcon(), 0, 0, 0);
                         Hijousyoku_tv[11].setCompoundDrawablesWithIntrinsicBounds(item[11].getIcon(), 0, 0, 0);
-
-
 
                         for( int i = 0 ; i < 12 ; i++ ) {
                             //特に警告のないものは飛ばす
@@ -294,12 +274,8 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
                                 tl.addView(Hijousyoku_tv[i]);
                             }
                         }
-
-                    }
-
+                    }// メイン画面処理　ここまで
                 }
-
-
             }
         });
 

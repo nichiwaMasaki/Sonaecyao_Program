@@ -79,12 +79,10 @@ public class Hijousyoku extends Activity {
             //ボタンアクションの処理
             Hijousyoku_iv[i].setOnClickListener( new DialogOnClickListenerClass( item[i]) );
             //期限の切れているものは赤線を敷く
-            if( Check_Day(item[i].getPrefName()) ) {
+            if( !Check_Day(item[i].getPrefName()) ) {
                 Hijousyoku_iv[i].setBackgroundResource(R.drawable.style2);
             }
         }
-
-
 
         //広告の設定
         AdView adview = (AdView)findViewById(R.id.adView);

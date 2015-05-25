@@ -35,9 +35,25 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<LinearLayout>{
+public class MainActivity extends Activity {
 
+    //定数
     final int MAX_HIJOUSYOKU = 12;
+    //非常食の項目を取得する
+    ItemClass[] item = {
+            new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this),
+            new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", this),
+            new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", this),
+            new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", this),
+            new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", this),
+            new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", this),
+            new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", this),
+            new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",this),
+            new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", this),
+            new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", this),
+            new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this ),
+            new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this)
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +62,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         setContentView(R.layout.activity_main);
 
         //TextView day = (TextView)findViewById(R.id.TextDay);    //文字を表示させるやつ
-        Calendar cl = Calendar.getInstance();       //今日の日付の取得
-
-        //RelativeLayout rl = (RelativeLayout)findViewById(R.id.Relative);
-
         Button DispBtn = (Button)findViewById(R.id.settingbutton);//「設定」ボタン
         Button Home = (Button)findViewById(R.id.home);//「ホーム」ボタン
         Button Stock = (Button)findViewById(R.id.bichiku);//「備蓄」ボタン
@@ -68,26 +80,27 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         //設定画面へ
         DispBtn.setOnClickListener( new OnClickTransListenerClass(".SubActivity",this ) );
 
+        // 広告の設定
+        // IDはあくまでテスト用なので、apkを出すときは外すように
+        AdView adview = (AdView)findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adview.loadAd(adRequest);
+
+    }
+
+    //アクティビティが実行される直前に行われる処理
+    @Override
+    protected void onResume() {
+        super.onResume();//おなじみ
+
+        Calendar cl = Calendar.getInstance();       //今日の日付の取得
         SharedPreferences pref = getSharedPreferences("Preferences",MODE_PRIVATE);
+
         //各グラフの取得
         ImageButton R_button = (ImageButton)findViewById(R.id.R_graph);
         ImageButton L_button = (ImageButton)findViewById(R.id.L_graph);
 
-        //非常食の項目を取得する
-        ItemClass[] item = new ItemClass[12];
-        item[0] = new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this);
-        item[1] = new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", this);
-        item[2] = new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", this);
-        item[3] = new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", this);
-        item[4] = new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", this);
-        item[5] = new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", this);
-        item[6] = new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", this);
-        item[7] = new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",this);
-        item[8] = new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", this);
-        item[9] = new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", this);
-        item[10] = new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this );
-        item[11] = new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this);
-
+        //二つの合計
         int[] goukei = new int[2];
 
         //非常食の割合を取得
@@ -98,51 +111,51 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         {
             L_button.setImageResource(R.drawable.l_graph0);
         }
-        else if( 0 < goukei[0] && goukei[0] < 10 )
+        else if( 1 <= goukei[0] && goukei[0] < 10 )
         {
             L_button.setImageResource(R.drawable.l_graph1);
         }
-        else if( 10 < goukei[0] && goukei[0] < 20 )
+        else if( 10 <= goukei[0] && goukei[0] < 20 )
         {
             L_button.setImageResource(R.drawable.l_graph2);
         }
-        else if( 20 < goukei[0] && goukei[0] < 30 )
+        else if( 20 <= goukei[0] && goukei[0] < 30 )
         {
             L_button.setImageResource(R.drawable.l_graph3);
         }
-        else if( 30 < goukei[0] && goukei[0] < 40 )
+        else if( 30 <= goukei[0] && goukei[0] < 40 )
         {
             L_button.setImageResource(R.drawable.l_graph4);
         }
-        else if( 40 < goukei[0] && goukei[0] < 50 )
+        else if( 40 <= goukei[0] && goukei[0] < 50 )
         {
             L_button.setImageResource(R.drawable.l_graph5);
         }
-        else if( 50 < goukei[0] && goukei[0] < 60 )
+        else if( 50 <= goukei[0] && goukei[0] < 60 )
         {
             L_button.setImageResource(R.drawable.l_graph6);
         }
-        else if( 60 < goukei[0] && goukei[0] < 70 )
+        else if( 60 <= goukei[0] && goukei[0] < 70 )
         {
             L_button.setImageResource(R.drawable.l_graph7);
         }
-        else if( 70 < goukei[0] && goukei[0] < 80 )
+        else if( 70 <= goukei[0] && goukei[0] < 80 )
         {
             L_button.setImageResource(R.drawable.l_graph8);
         }
-        else if( 80 < goukei[0] && goukei[0] < 90 )
+        else if( 80 <= goukei[0] && goukei[0] < 90 )
         {
             L_button.setImageResource(R.drawable.l_graph9);
         }
-        else if( 90 < goukei[0] && goukei[0] < 100 )
+        else if( 90 <= goukei[0] && goukei[0] < 100 )
         {
             L_button.setImageResource(R.drawable.l_graph10);
         }
-        else if( 100 < goukei[0] && goukei[0] < 110 )
+        else if( 100 <= goukei[0] && goukei[0] < 110 )
         {
             L_button.setImageResource(R.drawable.l_graph11);
         }
-        else if( 110 < goukei[0] )
+        else if( 110 <= goukei[0] )
         {
             L_button.setImageResource(R.drawable.l_graph12);
         }
@@ -151,59 +164,58 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         ((TextView)findViewById(R.id.hijousyoku_percent)).setText(String.valueOf(goukei[0]) + "%");
 
         //防犯グッズの値
-        goukei[1] = 50;
-
+        goukei[1] = 71;
 
         //右グラフの画像
         if( goukei[1] < 0 )
         {
             R_button.setImageResource(R.drawable.r_graph0);
         }
-        else if( 0 < goukei[1] && goukei[1] < 10 )
+        else if( 1 <= goukei[1] && goukei[1] < 10 )
         {
             R_button.setImageResource(R.drawable.r_graph1);
         }
-        else if( 10 < goukei[1] && goukei[1] < 20 )
+        else if( 10 <= goukei[1] && goukei[1] < 20 )
         {
             R_button.setImageResource(R.drawable.r_graph2);
         }
-        else if( 20 < goukei[1] && goukei[1] < 30 )
+        else if( 20 <= goukei[1] && goukei[1] < 30 )
         {
             R_button.setImageResource(R.drawable.r_graph3);
         }
-        else if( 30 < goukei[1] && goukei[1] < 40 )
+        else if( 30 <= goukei[1] && goukei[1] < 40 )
         {
             R_button.setImageResource(R.drawable.r_graph4);
         }
-        else if( 40 < goukei[1] && goukei[1] < 50 )
+        else if( 40 <= goukei[1] && goukei[1] < 50 )
         {
             R_button.setImageResource(R.drawable.r_graph5);
         }
-        else if( 50 < goukei[1] && goukei[1] < 60 )
+        else if( 50 <= goukei[1] && goukei[1] < 60 )
         {
             R_button.setImageResource(R.drawable.r_graph6);
         }
-        else if( 60 < goukei[1] && goukei[1] < 70 )
+        else if( 60 <= goukei[1] && goukei[1] < 70 )
         {
             R_button.setImageResource(R.drawable.r_graph7);
         }
-        else if( 70 < goukei[1] && goukei[1] < 80 )
+        else if( 70 <= goukei[1] && goukei[1] < 80 )
         {
             R_button.setImageResource(R.drawable.r_graph8);
         }
-        else if( 80 < goukei[1] && goukei[1] < 90 )
+        else if( 80 <= goukei[1] && goukei[1] < 90 )
         {
             R_button.setImageResource(R.drawable.r_graph9);
         }
-        else if( 90 < goukei[1] && goukei[1] < 100 )
+        else if( 90 <= goukei[1] && goukei[1] < 100 )
         {
             R_button.setImageResource(R.drawable.r_graph10);
         }
-        else if( 100 < goukei[1] && goukei[1] < 110 )
+        else if( 100 <= goukei[1] && goukei[1] < 110 )
         {
             R_button.setImageResource(R.drawable.r_graph11);
         }
-        else if( 110 < goukei[1] )
+        else if( 110 <= goukei[1] )
         {
             R_button.setImageResource(R.drawable.r_graph12);
         }
@@ -250,7 +262,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         }
         //要チェック
         //プレファレンスを生成して、設定画面のデータを取得する
-        pref = getSharedPreferences("Preferences",MODE_PRIVATE);
+        //pref = getSharedPreferences("Preferences",MODE_PRIVATE);
         int gou = pref.getInt("youji_people",0) +
                 pref.getInt("kobito_people",0) +
                 pref.getInt("otona_people",0) +
@@ -267,11 +279,13 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
             dc.setNegativeButton("後で",null);
             dc.Diarog_show();
         }
+
         //要チェックに使用するTextViewを使用する
         TextView[] Hijousyoku_tv = new TextView[MAX_HIJOUSYOKU];
-        //フラグメントのリニアレイアウトを取得
 
+        //フラグメントのリニアレイアウトを取得
         TableLayout tl  = (TableLayout)findViewById(R.id.CheckLayout);
+        tl.removeAllViews();//中身を全部消去
 
         for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
             Hijousyoku_tv[i] = new TextView(this);
@@ -297,7 +311,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         Hijousyoku_tv[11].setCompoundDrawablesWithIntrinsicBounds(item[11].getIcon(), 0, 0, 0);
 
 
-        //TODO:ソートで　幼児＞警告＞注意
+
         for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
             //特に警告のないものは飛ばす
             if (Hijousyoku_tv[i].getText().length() > 0) {
@@ -315,7 +329,17 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                             ItemClass ic = item[k-1];
                             item[k-1] = item[k];
                             item[k] = ic;
-                        }else if (item[k].getIcon() == R.drawable.batsu || Hijousyoku_tv[k-1].getText().length() < 0) { //×ボタン または 空白 である
+                        }else if (item[k].getIcon() == R.drawable.batsu || Hijousyoku_tv[k-1].getText().length() < 0) { //×ボタン または 上の段が空白 である
+                            //場所を交換する
+                            TextView tv = Hijousyoku_tv[k - 1];
+                            Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
+                            Hijousyoku_tv[k] = tv;
+
+                            //アイテム
+                            ItemClass ic = item[k-1];
+                            item[k-1] = item[k];
+                            item[k] = ic;
+                        }else if( getDate(item[k].getPrefName()) < getDate(item[k-1].getPrefName()) ) {
                             //場所を交換する
                             TextView tv = Hijousyoku_tv[k - 1];
                             Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
@@ -332,8 +356,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                 tl.addView(Hijousyoku_tv[i]);
             }
         }
-
-
         //最終入力日
         TextView b_tv = (TextView)findViewById(R.id.bichiku_nyuuryoku);
         TextView h_tv = (TextView)findViewById(R.id.hijousyoku_nyuuryoku);
@@ -346,14 +368,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         //非常食の最終入力日
         pref = getSharedPreferences("Hijousyoku_pref",MODE_PRIVATE);
         cl.set( pref.getInt("year", 2000), pref.getInt("month", 1), pref.getInt("day", 1) );
-        h_tv.setText( "最終入力日:" + cl.get(Calendar.YEAR) + "年" + (cl.get(Calendar.MONTH)+1) + "月" + cl.get(Calendar.DAY_OF_MONTH) + "日" );
+        h_tv.setText("最終入力日:" + cl.get(Calendar.YEAR) + "年" + (cl.get(Calendar.MONTH) + 1) + "月" + cl.get(Calendar.DAY_OF_MONTH) + "日");
 
-        //広告の設定
-        AdView adview = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adview.loadAd(adRequest);
     }
-
 
     /*********************************************************************
     //非常食の賞味期限と設定した期日を計算して、それぞれのテキストを返す
@@ -416,96 +433,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         }
 
         return str;
-    }
-
-    //アクティビティが再始動したら行う処理
-    @Override
-    protected void onResume() {
-        super.onResume();//おなじみ
-
-
-        //非常食の項目を取得する
-        ItemClass[] item = new ItemClass[12];
-        item[0] = new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this);
-        item[1] = new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", this);
-        item[2] = new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", this);
-        item[3] = new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", this);
-        item[4] = new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", this);
-        item[5] = new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", this);
-        item[6] = new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", this);
-        item[7] = new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",this);
-        item[8] = new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", this);
-        item[9] = new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", this);
-        item[10] = new ItemClass("離乳食", "rinyu_number", R.drawable.rinyu, true, this );
-        item[11] = new ItemClass("粉ミルク", "konamilk_number", R.drawable.konamilk, true, this);
-
-        //要チェックに使用するTextViewを使用する
-        TextView[] Hijousyoku_tv = new TextView[MAX_HIJOUSYOKU];
-        //フラグメントのリニアレイアウトを取得
-
-        TableLayout tl  = (TableLayout)findViewById(R.id.CheckLayout);
-        tl.removeAllViews();//中身を全部消去
-
-        for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
-            Hijousyoku_tv[i] = new TextView(this);
-            //警告文を取得する
-            Hijousyoku_tv[i].setText(get_Number_of_days_Warning(item[i].getPrefName(), item[i].getName()));
-            //警告文を挿入する
-            if( Hijousyoku_tv[i].getText().length() > 0 ) {
-
-                //警告文を押すとダイアログが表示されるようにする
-                Hijousyoku_tv[i].setOnClickListener( new DialogOnClickListenerClass(item[i]));
-
-                //アイコンの設定
-                get_Icon_Warning(item[i].getPrefName(), item[i]);
-                Hijousyoku_tv[i].setCompoundDrawablesWithIntrinsicBounds(item[i].getIcon(), 0, 0, 0);
-                Hijousyoku_tv[i].setTextColor(Color.RED);
-            }
-        }
-
-        //幼児用のみテキストを変更
-        Hijousyoku_tv[10].setText( get_Child_Warning( item[10].getPrefName(),item[10].getName() ) );
-        Hijousyoku_tv[11].setText( get_Child_Warning( item[11].getPrefName(),item[11].getName() ) );
-        Hijousyoku_tv[10].setCompoundDrawablesWithIntrinsicBounds(item[10].getIcon(), 0, 0, 0);
-        Hijousyoku_tv[11].setCompoundDrawablesWithIntrinsicBounds(item[11].getIcon(), 0, 0, 0);
-
-
-
-        for( int i = 0 ; i < MAX_HIJOUSYOKU ; i++ ) {
-            //特に警告のないものは飛ばす
-            if (Hijousyoku_tv[i].getText().length() > 0) {
-                for( int k = MAX_HIJOUSYOKU-1 ; k > i ; k-- ) {
-                    //同じく特に警告のないものは飛ばす
-                    if (Hijousyoku_tv[k].getText().length() > 0) {
-                        //乳児用の食料である
-                        if(item[k].getName() == "離乳食" || item[k].getName() == "粉ミルク") {
-                            //場所を交換する
-                            TextView tv = Hijousyoku_tv[k - 1];
-                            Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
-                            Hijousyoku_tv[k] = tv;
-
-                            //アイテム
-                            ItemClass ic = item[k-1];
-                            item[k-1] = item[k];
-                            item[k] = ic;
-                        }else if (item[k].getIcon() == R.drawable.batsu || Hijousyoku_tv[k-1].getText().length() < 0) { //×ボタン または 空白 である
-                            //場所を交換する
-                            TextView tv = Hijousyoku_tv[k - 1];
-                            Hijousyoku_tv[k - 1] = Hijousyoku_tv[k];
-                            Hijousyoku_tv[k] = tv;
-
-                            //アイテム
-                            ItemClass ic = item[k-1];
-                            item[k-1] = item[k];
-                            item[k] = ic;
-                        }
-                    }
-                }
-                //画面に表示する
-                tl.addView(Hijousyoku_tv[i]);
-            }
-        }
-
     }
 
     /*********************************************************************
@@ -638,6 +565,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         double v;
 
 
+        /*
         //水を除く栄養量
         int Hijou_All_Eiyou = 0;
 
@@ -673,10 +601,8 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
         int aaaa =  (int)(percent*100);
 
-        return aaaa;
+        return aaaa;*/
 
-
-        /*
 
         //栄養価の計算。乾パンとカロリーメイトを抜いたものは栄養価１．乾パン、カロリーメイトは３。
         v = ((Hijousyoku_sum - kanpan - karori) * 1) + (kanpan + karori) * 3;
@@ -727,25 +653,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         s_w = s_w + p;
 
         return (int)s_w;
-        */
 
-    }
-
-    @Override
-    public Loader<LinearLayout> onCreateLoader(int id, Bundle args) {
-        //ローダの開始処理
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<LinearLayout> loader, LinearLayout data) {
-        //ローダの終了処理
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-        //ローダのリセット処理
-        Toast.makeText(this,"更新します・・・",Toast.LENGTH_LONG).show();
     }
 }
