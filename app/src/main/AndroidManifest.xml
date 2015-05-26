@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/masaki_ic"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"> <!-- @android:style/Theme.DeviceDefault.Light.DialogWhenLarge.NoActionBar -->
+        android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar"> <!-- @android:style/Theme.DeviceDefault.Light.DialogWhenLarge.NoActionBar -->
         <activity
             android:name=".MainActivity"
             android:label="備えよ"
