@@ -51,7 +51,7 @@ public class Hijousyoku extends Activity {
 
         //非常食の項目を取得する
         ItemClass[] item = new ItemClass[12];
-        item[0] = new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this);
+        item[0] = new ItemClass("レトルトごはんんんんん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this);
         item[1] = new ItemClass("缶詰（ごはん）", "kandume_number", R.drawable.kandume_gohan, true,"缶", this);
         item[2] = new ItemClass("乾麺", "kanmen_number", R.drawable.kanmen, true,"袋", this);
         item[3] = new ItemClass("カンパン", "kanpan_number", R.drawable.kanpan, true,"缶", this);
