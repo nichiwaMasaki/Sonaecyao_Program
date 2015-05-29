@@ -173,11 +173,8 @@ public class DialogOnClickListenerClass implements View.OnClickListener {
                 //値が格納されてないか判定する
                 if(et.getText().toString().length() <= 0) {
                     //カラッポである
-                    AlertDialog.Builder  null_alert = new AlertDialog.Builder(act);
-                    null_alert.setTitle("入力エラー");
-                    null_alert.setMessage("値が入力されていません");
-                    null_alert.setPositiveButton("OK",null);
-                    null_alert.show();
+                    et.setText("0");
+                    saveInt(et, DateName);
                 }
                 else {
                     //正常なのでデータを保存する

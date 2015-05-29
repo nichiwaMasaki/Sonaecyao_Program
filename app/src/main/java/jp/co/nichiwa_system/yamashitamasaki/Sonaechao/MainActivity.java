@@ -35,10 +35,16 @@ import org.w3c.dom.Text;
 import java.util.Calendar;
 import java.util.Date;
 
+/*
+ *   MainActivityクラス
+ *   メイン画面の中の処理
+ *   activity_main.xml の 内部の処理を行うクラスです
+ */
 public class MainActivity extends Activity {
 
-    //定数
+    //非常食の種類
     final int MAX_HIJOUSYOKU = 12;
+
     //非常食の項目を取得する
     ItemClass[] item = {
             new ItemClass("レトルトごはん", "retorutogohan_number", R.drawable.retoruto_gohan, true,"袋", this),
@@ -61,7 +67,6 @@ public class MainActivity extends Activity {
         //activity_main.xmlを使う場合これを宣言する
         setContentView(R.layout.activity_main);
 
-        //TextView day = (TextView)findViewById(R.id.TextDay);    //文字を表示させるやつ
         Button DispBtn = (Button)findViewById(R.id.settingbutton);//「設定」ボタン
         Button Home = (Button)findViewById(R.id.home);//「ホーム」ボタン
         Button Stock = (Button)findViewById(R.id.bichiku);//「備蓄」ボタン
