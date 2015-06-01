@@ -111,8 +111,11 @@ public class MainActivity extends Activity {
         //非常食の割合を取得
         goukei[0] = eiyou();
 
+        //  備蓄品の割合を取得　※6月1日、岡田作成
+        goukei[1] = RateStock();
+
         //左グラフの画像
-        if( goukei[0] < 0 )
+        if( goukei[0] <= 0 )
         {
             L_button.setImageResource(R.drawable.l_graph0);
         }
@@ -169,10 +172,10 @@ public class MainActivity extends Activity {
         ((TextView)findViewById(R.id.hijousyoku_percent)).setText(String.valueOf(goukei[0]) + "%");
 
         //防犯グッズの値
-        goukei[1] = 71;
+//        goukei[1] = 71;
 
         //右グラフの画像
-        if( goukei[1] < 0 )
+        if( goukei[1] <= 0 )
         {
             R_button.setImageResource(R.drawable.r_graph0);
         }
@@ -231,10 +234,10 @@ public class MainActivity extends Activity {
         //ダイアログの生成
         DialogClass keikoku;
 
-        //備蓄品の割合が50%未満の場合、警告を出す
-        if( goukei[0] < 50 )
+        //備蓄品の割合が60%未満の場合、警告を出す
+        if( goukei[0] < 60 )
         {
-            keikoku = new DialogClass("警告","備蓄品が50%未満です",this);
+            keikoku = new DialogClass("警告","備蓄品が60%未満です",this);
             keikoku.setPositiveButton("確認する", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -248,10 +251,10 @@ public class MainActivity extends Activity {
             keikoku.Diarog_show();
         }
 
-        //非常食の割合が50%未満の場合、警告を出す
-        if( goukei[1] < 50 )
+        //非常食の割合が60%未満の場合、警告を出す
+        if( goukei[1] < 60 )
         {
-            keikoku = new DialogClass("警告","非常食が50%未満です",this);
+            keikoku = new DialogClass("警告","非常食が60%未満です",this);
             keikoku.setPositiveButton("確認する", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -367,12 +370,12 @@ public class MainActivity extends Activity {
 
         //備蓄品の最終入力日
         pref = getSharedPreferences("Stock_pref",MODE_PRIVATE);
-        cl.set( pref.getInt("year", 2000), pref.getInt("month", 1), pref.getInt("day", 1) );
+        cl.set( pref.getInt("year", 2015), pref.getInt("month", 1), pref.getInt("day", 1) );
         b_tv.setText( "最終入力日:" + cl.get(Calendar.YEAR) + "年" + (cl.get(Calendar.MONTH)+1) + "月" + cl.get(Calendar.DAY_OF_MONTH) + "日" );
 
         //非常食の最終入力日
         pref = getSharedPreferences("Hijousyoku_pref",MODE_PRIVATE);
-        cl.set( pref.getInt("year", 2000), pref.getInt("month", 1), pref.getInt("day", 1) );
+        cl.set( pref.getInt("year", 2015), pref.getInt("month", 1), pref.getInt("day", 1) );
         h_tv.setText("最終入力日:" + cl.get(Calendar.YEAR) + "年" + (cl.get(Calendar.MONTH) + 1) + "月" + cl.get(Calendar.DAY_OF_MONTH) + "日");
 
     }
@@ -552,7 +555,7 @@ public class MainActivity extends Activity {
 
         //各合計
         //int sum = g + m + b + h + s + t + a + gun;
-        int Hijousyoku_sum = reto_g + kan + kan + kanpan + kan2 + reto + furizu + karori + okasi + rinyu + konamilk;
+        int Hijousyoku_sum = reto_g + kan + kanmen + kanpan + kan2 + reto + furizu + karori + okasi + rinyu + konamilk;
         //String str = "備蓄品:"+String.valueOf(sum);
         String Hijousyoku_str2 = "非常食:" + String.valueOf(Hijousyoku_sum);
         //int hoge = setting.getInt("setting_sp",0);
@@ -660,4 +663,288 @@ public class MainActivity extends Activity {
         return (int)s_w;
 
     }
+/**************************************************************************************************/
+//  処理内容：備蓄品の全体の割合を計算します
+//  概要　　：必需品、便利品、幼児用などを分けて計算します
+//　作成日　：2015年6月1日
+//　担当　　：岡田　洋介
+//  備考  　：特筆する事項なし。
+/**************************************************************************************************/
+
+    public int RateStock()
+    {
+        int rateStockTotal = 0;
+        SharedPreferences pref = getSharedPreferences("Preferences", MODE_PRIVATE);
+
+        //  各備蓄品の値を代入
+        int gas = pref.getInt("gas_number", 0);
+        int almi = pref.getInt("almi_number", 0);
+        int bombe = pref.getInt("bombe_number", 0);
+        int gunnte = pref.getInt("gunnte_number", 0);
+        int fue = pref.getInt("whistle_number", 0);
+        int matti = pref.getInt("match_number", 0);
+        int tissue = pref.getInt("tissue_number", 0);
+//        int aSitagi;
+//        int kSitagi;
+        int kaityu = pref.getInt("kaityu_number", 0);
+        int koppu = pref.getInt("koppu_number", 0);
+//        int utuwa;
+//        int rappu;
+        int fukuro = pref.getInt("bag_number", 0);
+        int spoon = pref.getInt("supun_number", 0);
+//        int hasi;
+        int denti = pref.getInt("denti_number", 0);
+        int radio = pref.getInt("radio_number", 0);
+        int kankiri = pref.getInt("kankiri_number", 0);
+        int mask = pref.getInt("mask_number", 0);
+        int judenki = pref.getInt("judenki_number", 0);
+        int nebukuro = pref.getInt("nebukuro_number", 0);
+//        int bin;
+//        int omutu;
+
+        //  設定の各値を代入
+        int adult = pref.getInt("otona_people", 0);
+        int kids = pref.getInt("kobito_people", 0);
+        int baby = pref.getInt("youji_people", 0);
+        int setting = pref.getInt("sitei_day", 3);
+
+/**************************************************************************************************/
+//  必需品の計算
+/**************************************************************************************************/
+        float rateNTotal = 0.0f;
+        float rateNOKAll = 0.0f;
+        float rateNBAll = 0.0f;
+        float divStock = 15.0f;
+        float divBStock = 2.0f;
+
+        rateNOKAll += UsedFamilyStock( kaityu, setting, 1.0f, 1.0f, 1.0f);
+        rateNOKAll += UsedFamilyStock( almi, setting, 1.0f, 1.0f, 2.0f);
+//        rateNOKAll += UsedFamilyStock( rappu, setting, 1.0f, 1.0f, 3.0f);
+        rateNOKAll += UsedFamilyStock( bombe, setting, 1.0f, 2.0f, 5.0f);
+        rateNOKAll += UsedFamilyStock( gas, setting, 1.0f, 1.0f, 1.0f);
+        rateNOKAll += UsedFamilyStock( tissue, setting, 1.0f, 1.0f, 3.0f);
+        rateNOKAll += UsedFamilyStock( fukuro, setting, 1.0f, 1.0f, 1.0f);
+        rateNOKAll += UsedFamilyStock( spoon, setting, 1.0f, 1.0f, 1.0f);
+//        rateNOKAll += UsedFamilyStock( hasi, setting, 1.0f, 1.0f, 1.0f);
+        rateNOKAll += UsedFamilyStock( denti, setting, 2.0f, 2.0f, 4.0f);
+        rateNOKAll += UsedOneStock( koppu, adult, kids, baby);
+//        rateNOKAll += UsedOneStock( utuwa, adult, kids, baby);
+//        rateNOKAll += UsedOneStockOnlyTowel( taoru, adult, kids, baby, setting);
+
+        if(kids > 0) {
+//            rateNOKAll += UsedWearStock(kodomositagi, setting, 1.0f, 1.0f, 2.0f);
+        }
+        if(!(setting == 1) && adult > 0) {   //
+//            rateNOKAll += UsedWearStock(sitagi, setting, 0.0f, 1.0f, 2.0f);
+        }
+        //  この下の関数だけ、divStockが＋２
+        if(baby > 0) {
+//            rateNBAll += UsedBabyWearStock(bin, omutu, setting);
+        }
+
+        //  割り算の値を決定（カテゴリーの数だけ割るので、いらないカテゴリーは減数します。
+        //  期日1日で、大人がいた場合。大人下着が不要です。
+        if(setting == 1 && adult > 0){
+            divStock -= 1.0f;
+        }
+
+        //  大人0人だと、大人下着が不要です。
+        if(adult == 0){
+            divStock -= 1.0f;
+        }
+
+        //  小人0人だと、小人下着が不要です。
+        if(kids == 0){
+            divStock -= 1.0f;
+        }
+
+        //  幼児0人だと、哺乳びんとオムツが不要です。
+        if (baby == 0){
+            divBStock -= 2.0f;
+        }
+
+
+        if((adult + kids) > 0 && baby == 0){
+            rateNOKAll = ( rateNOKAll / divStock ) * 0.6f;
+        } else if ((adult + kids) > 0 && baby > 0){
+            rateNOKAll = ( rateNOKAll /  divStock ) * 0.5f;
+            rateNBAll  = ( rateNBAll  / divBStock ) * 0.1f;
+        }
+
+        //  必需品の最終計
+        rateNTotal = (rateNOKAll + rateNBAll) ;
+        if ((adult + kids + baby ) == 0){
+            rateNTotal = 0.0f;
+        }
+/**************************************************************************************************/
+//  便利品の計算
+/**************************************************************************************************/
+        float   rateUTotal = 0.0f;
+        float   rateUAll = 0.0f;
+        float   divUStock = 8.0f;
+
+        //  幼児は必要ないので無条件で０
+        rateUAll += UsedOneStock( gunnte, adult, kids, 0);
+        rateUAll += UsedOneStock( nebukuro, adult, kids, 0);
+
+        rateUAll += UsedFamilyStock( fue, setting, 1.0f, 1.0f, 1.0f);
+        rateUAll += UsedFamilyStock( matti, setting, 1.0f, 1.0f, 1.0f);
+        rateUAll += UsedFamilyStock( radio, setting, 1.0f, 1.0f, 1.0f);
+        if(!(setting == 1)) {   //  設定が1日だった場合、行わない。０除算防止。
+            rateUAll += UsedFamilyStock(kankiri, setting, 0.0f, 1.0f, 1.0f);
+        }
+        rateUAll += UsedFamilyStock( mask, setting, 1.0f, 1.0f, 1.0f);
+        rateUAll += UsedFamilyStock( judenki, setting, 1.0f, 1.0f, 1.0f);
+
+        if(setting == 1){
+            divUStock -= 1.0f;
+        }
+
+        rateUTotal = (rateUAll / divUStock ) * 0.4f;
+
+/**********************************************************************************/
+//  備蓄品、トータルパーセンテージ
+/**********************************************************************************/
+        float rateStockFinal = 0.0f;
+        rateStockFinal = rateNTotal + rateUTotal;
+
+        rateStockTotal = (int)( rateStockFinal * 100 );
+
+        if( (adult + kids + baby) == 0 ){
+            rateStockTotal = 0;
+        }
+
+        return rateStockTotal;
+    }
+
+    public float UsedFamilyStock(float stock, int set, float x, float y, float z){
+        float rate = 0.0f;
+        switch(set){
+            case 1:
+                rate = stock / x;
+                break;
+            case 3:
+                rate = stock / y;
+                break;
+            case 7:
+                rate = stock / z;
+                break;
+        }
+
+        if(rate >= 1.0f){
+            rate = 1.0f;
+        }
+
+        return rate;
+    }
+
+    public float UsedOneStock(float stock, int adult, int kids, int baby){
+        float rate = 0.0f;
+
+        rate = stock / ( adult + kids + baby );
+        if(rate >= 1.0f){
+            rate = 1.0f;
+        }
+
+        return rate;
+    }
+
+    public float UsedOneStockOnlyTowel(float towel, int adult, int kids, int baby, int set){
+        float rate = 0.0f;
+        switch (set){
+            case 1:
+                rate = towel / (adult + kids + baby);
+                if (rate >= 1.0f){
+                    rate = 1.0f;
+                }
+                break;
+
+            case 3:
+                rate = towel / ( adult + kids + (baby * 2.0f) );
+                if (rate >= 1.0f){
+                    rate = 1.0f;
+                }
+                break;
+
+            case 7:
+                rate = towel / ( (adult * 3.0f) + (kids * 3.0f) + (baby * 6.0f) );
+                if (rate >= 1.0f){
+                    rate = 1.0f;
+                }
+                break;
+        }
+        return rate;
+    }
+
+    //改正版
+    public float UsedWearStock(float wear, int set, float x, float y, float z){
+        float rate = 0.0f;
+
+        switch (set){
+            case 1:
+                rate = wear / x;
+                break;
+
+            case 3:
+                rate = wear / y;
+                break;
+
+            case 7:
+                rate = wear / z;
+                break;
+        }
+        if(rate >= 1.0f){
+            rate = 1.0f;
+        }
+
+        return rate;
+    }
+    public float UsedBabyWearStock(float bin, float omutu, int set){
+        float rateBin = 0.0f;
+        float rateOmutu = 0.0f;
+        float rateFinal;
+
+        switch (set){
+            case 1:
+                rateBin = bin / 1.0f;
+                if( rateBin >= 1.0f){
+                    rateBin = 1.0f;
+                }
+
+                rateOmutu = omutu / 2.0f;
+                if (rateOmutu >= 1.0f){
+                    rateOmutu = 1.0f;
+                }
+                break;
+
+            case 3:
+                rateBin = bin / 1.0f;
+                if( rateBin >= 1.0f){
+                    rateBin = 1.0f;
+                }
+
+                rateOmutu = omutu / 5.0f;
+                if (rateOmutu >= 1.0f){
+                    rateOmutu = 1.0f;
+                }
+                break;
+
+            case 7:
+                rateBin = bin / 1.0f;
+                if( rateBin >= 1.0f){
+                    rateBin = 1.0f;
+                }
+
+                rateOmutu = omutu / 10.0f;
+                if (rateOmutu >= 1.0f){
+                    rateOmutu = 1.0f;
+                }
+                break;
+        }
+
+        rateFinal = rateBin + rateOmutu;
+
+        return rateFinal;
+    }
+
 }

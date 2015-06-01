@@ -40,7 +40,7 @@ public class ItemClass {
     }
 
     public int getNumber() { return Number; }
-    public  String getName() { return ItemName; }
+    public String getName() { return ItemName; }
     public String getPrefName(){ return prefName; }
     public int getDrawable_Location(){ return Drawable_Location; }
     public String getUnit(){ return Unit; }

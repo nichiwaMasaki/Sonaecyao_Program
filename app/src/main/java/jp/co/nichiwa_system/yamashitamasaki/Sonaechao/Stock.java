@@ -60,7 +60,7 @@ public class Stock extends Activity {
                 new ItemClass("アルミホイル", "almi_number", R.drawable.almi, false, this),
                 new ItemClass("軍手", "gunnte_number", R.drawable.gunnte, false, this),
                 new ItemClass("マスク", "mask_number", R.drawable.mask, false, this),
-                new ItemClass("ビニール袋", "mask_number", R.drawable.biniiru, false, this),
+                new ItemClass("ビニール袋", "bag_number", R.drawable.biniiru, false, this),
                 new ItemClass("懐中電灯", "kaityu_number", R.drawable.kaityu, false, this),
                 new ItemClass("缶切り", "kankiri_number", R.drawable.kankiri, false, this),
                 new ItemClass("ラジオ", "radio_number", R.drawable.radio, false, this),
@@ -124,12 +124,17 @@ public class Stock extends Activity {
         //引数で指定した非常食の賞味期限
         Calendar cl2 = Calendar.getInstance();
         cl2.set(pref2.getInt("year", cl.get(Calendar.YEAR)), pref2.getInt("month", cl.get(Calendar.MONTH)), pref2.getInt("day", cl.get(Calendar.DAY_OF_MONTH)));
+
+        //  現在時間の取得
         Date date1 = cl.getTime();
+
+        //  非常食の賞味期限時間
         Date date2 = cl2.getTime();
 
         long current_time = date1.getTime();
         long item_time = date2.getTime();
 
+        //                                            1日のミリ秒数
         long nokori = (item_time - current_time) / ( 1000 * 60 * 60 * 24 );
 
         return nokori;
