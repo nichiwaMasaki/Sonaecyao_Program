@@ -57,7 +57,7 @@ public class Hijousyoku extends Activity {
         item[3] = new ItemClass("カンパン!", "kanpan_number", R.drawable.kanpan, true,"缶", this);
         item[4] = new ItemClass("缶詰（肉・魚）", "kandume2_number", R.drawable.kandume, true, "缶", this);
         item[5] = new ItemClass("レトルト食品", "retoruto_number", R.drawable.retoruto, true, "袋", this);
-        item[6] = new ItemClass("フリーズドライ", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", this);
+        item[6] = new ItemClass("フ!リ!ー!ズ!ド!ラ!イ1", "furizu_dorai_number", R.drawable.furizu_dorai, true, "塊", this);
         item[7] = new ItemClass("水", "mizu_number", R.drawable.mizu, true, "ℓ",this);
         item[8] = new ItemClass("カロリーメイト", "karori_meito_number", R.drawable.karori_meito, true, "箱", this);
         item[9] = new ItemClass("お菓子", "okasi_number", R.drawable.okasi, true, "箱・袋", this);
