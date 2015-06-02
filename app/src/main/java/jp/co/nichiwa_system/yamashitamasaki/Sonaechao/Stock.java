@@ -50,6 +50,8 @@ public class Stock extends Activity {
                 (ImageView)findViewById(R.id.nebukuroView),
         };
         //備蓄品の項目を取得する
+        //引数の順番は、タイトル名、プレファレンスキー、表示する画像名(pngなど)、カレンダーアイコン（※）、アクティビティ
+        //（※）カレンダーアイコンはtrueは存在する。falseは存在しない。
         ItemClass[] item = {
                 new ItemClass("ガスコンロ", "gas_number", R.drawable.gas, false, this),
                 new ItemClass("マッチ・ライター", "match_number", R.drawable.match, false, this),
